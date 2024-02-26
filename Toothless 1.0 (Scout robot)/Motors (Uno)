@@ -1,0 +1,140 @@
+#include <SoftwareSerial.h>
+SoftwareSerial BTserial(0,1);//RX|TX
+
+int RF=5;//BTS 1
+int RB=6;
+//int L_EN=4;
+//int R_EN=5;
+
+int LF=9;//BTS 2 
+int LB=10;
+//int L_EN_1=8;
+//int R_EN_1=9;
+
+char command; 
+int Speed = 140; 
+
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(RF, OUTPUT);
+  pinMode(RB, OUTPUT);
+//  pinMode(L_EN, OUTPUT);
+//  pinMode(R_EN, OUTPUT);
+
+  //BT 2
+  pinMode(LF, OUTPUT);
+  pinMode(LB, OUTPUT);
+//  pinMode(L_EN_1, OUTPUT);
+//  pinMode(R_EN_1, OUTPUT);
+
+  Serial.begin(9600); 
+  BTserial.begin(9600);
+  Serial.println("Bluetooth Car Control");
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  
+  //from here BT code start
+  if (Serial.available() > 0) {
+    command = Serial.read();
+    
+    Serial.println(command);
+    //Stop(); 
+    switch (command) {
+      case 'F':
+        forward();
+        break;
+      case 'B':
+        back();
+        break;
+      case 'L':
+        left();
+        break;
+      case 'R':
+        right();
+        break;
+      case 'G':
+        forwardleft();
+        break;
+      case 'I':
+        forwardright();
+        break;
+      case 'H':
+        backleft();
+        break;
+      case 'J':
+        backright();
+        break;
+      case 's':
+        Stop();
+        break;      
+    }
+  }
+}
+
+
+void forward() {
+  analogWrite(RF, Speed);
+  analogWrite(RB, 0);
+  analogWrite(LF, Speed);
+  analogWrite(LB, 0);
+}
+
+void back() {
+  analogWrite(RF, 0);
+  analogWrite(RB, Speed);
+  analogWrite(LF, 0);
+  analogWrite(LB, Speed);
+}
+
+
+void left() {
+  analogWrite(RF, Speed);
+  analogWrite(LF, 0);
+  analogWrite(RB, 0);
+  analogWrite(LB, Speed);
+}
+
+void right() {
+  analogWrite(RF, 0);
+  analogWrite(LF, Speed);
+  analogWrite(RB, Speed);
+  analogWrite(LB,0);
+}
+
+void forwardleft() {
+  analogWrite(RF, Speed);
+  analogWrite(LF, 0);
+  analogWrite(RB, 0);
+  analogWrite(LB,0);
+}
+
+void forwardright() {
+  analogWrite(RF, 0);
+  analogWrite(LF, Speed);
+  analogWrite(RB,0);
+  analogWrite(LB, 0);
+}
+
+void backright() {
+  analogWrite(RF, 0);
+  analogWrite(LF, 0);
+  analogWrite(RB, Speed);
+  analogWrite(LB,0);
+}
+void backleft() {
+ analogWrite(RF, 0);
+  analogWrite(LF, 0);
+  analogWrite(RB, 0);
+  analogWrite(LB,Speed);
+}
+
+
+void Stop() {
+  analogWrite(RF, 0);
+  analogWrite(RB, 0);
+  analogWrite(LF, 0);
+  analogWrite(LB, 0); 
+ 
+}

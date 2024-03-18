@@ -1,25 +1,55 @@
-// PIR sensor and buzzer project
 // Code by Adittya Kumar Chowdhury
+// When motion is detected, an LED lights up for 5 seconds and a buzzer sounds for 2 seconds.
 
-// Define the pins for the PIR sensor and the buzzer
-const int pirPin = 2; // Pin connected to the PIR sensor's output
-const int buzzerPin = 11; // Pin connected to the buzzer (changed to pin 11)
+int ledPin = 13;               // the pin that the LED is attached to
+int sensorPin = 2;             // the pin that the sensor is attached to
+int buzzerPin = 8;             // the pin that the buzzer is attached to
+int sensorState = LOW;         // by default, no motion detected
+unsigned long lastMotionTime = 0; // the last time motion was detected
+unsigned long lastBuzzerTime = 0; // the last time the buzzer was activated
+bool buzzerActive = false;     // track whether the buzzer is currently active
 
 void setup() {
-  pinMode(pirPin, INPUT); // Initialize the PIR sensor pin as an input
-  pinMode(buzzerPin, OUTPUT); // Initialize the buzzer pin as an output
-  Serial.begin(9600); // Start serial communication for debugging
+  pinMode(ledPin, OUTPUT);     // initialize LED as an output
+  pinMode(buzzerPin, OUTPUT);  // initialize buzzer as an output
+  pinMode(sensorPin, INPUT);   // initialize sensor as an input
+  Serial.begin(9600);          // initialize serial
 }
 
 void loop() {
-  int pirValue = digitalRead(pirPin); // Read the value from the PIR sensor
-  if (pirValue) { // If the PIR sensor detects motion
-    digitalWrite(buzzerPin, HIGH); // Turn on the buzzer
-    Serial.println("Motion detected!"); // Send a message to the serial monitor
-    delay(1000); // Keep the buzzer on for 1 second
-    digitalWrite(buzzerPin, LOW); // Turn off the buzzer
-  } else {
-    digitalWrite(buzzerPin, LOW); // Ensure the buzzer is off if no motion is detected
+  int sensorValue = digitalRead(sensorPin);  // read sensor value
+  unsigned long currentTime = millis();
+  
+  if (sensorValue == HIGH) {             // check if the sensor is HIGH
+    if (sensorState == LOW) {
+      Serial.println("Motion detected!");
+      sensorState = HIGH;                // update variable state to HIGH
+      lastMotionTime = currentTime;     // update the last motion time
+      lastBuzzerTime = currentTime;     // reset the buzzer timer
+      buzzerActive = true;              // activate the buzzer
+    }
   }
-  delay(100); // Short delay before the next loop iteration
+  
+  // Manage LED timing
+  if (currentTime - lastMotionTime <= 5000) { // If less than 5 seconds have passed
+    digitalWrite(ledPin, HIGH);               // Keep the LED ON
+  } else {
+    digitalWrite(ledPin, LOW);                // Turn the LED OFF
+  }
+  
+  // Manage buzzer timing
+  if (buzzerActive && currentTime - lastBuzzerTime <= 2000) { // If less than 2 seconds have passed
+    digitalWrite(buzzerPin, HIGH);            // Keep the buzzer ON
+  } else {
+    digitalWrite(buzzerPin, LOW);             // Turn the buzzer OFF
+    buzzerActive = false;                     // Deactivate the buzzer
+  }
+
+  // Reset sensor state if no motion is detected and actions have concluded
+  if (sensorValue == LOW && currentTime - lastMotionTime > 5000 && !buzzerActive) {
+    if (sensorState == HIGH) {
+      Serial.println("Motion stopped!");
+      sensorState = LOW;                      // Update variable state to LOW
+    }
+  }
 }

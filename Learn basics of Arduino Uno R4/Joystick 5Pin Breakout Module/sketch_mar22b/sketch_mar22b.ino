@@ -1,0 +1,39 @@
+// Code by Adittya Kumar Chowdhury
+// This program reads the position of a joystick connected to an Arduino Uno R4 wifi and outputs the angle and direction to the Serial Monitor.
+
+const int joystickX = A0; // Joystick X-axis connected to A0
+const int joystickY = A1; // Joystick Y-axis connected to A1
+
+void setup() {
+  Serial.begin(9600); // Start serial communication at 9600 baud rate
+}
+
+void loop() {
+  int xPosition = analogRead(joystickX); // Read the joystick X-axis position
+  int yPosition = analogRead(joystickY); // Read the joystick Y-axis position
+
+  // Convert the joystick position to angle
+  float angle = atan2(yPosition - 512, xPosition - 512) * (180 / PI);
+  if (angle < 0) angle += 360; // Map angle to range [0, 360]
+
+  // Output the angle
+  Serial.print("Angle: ");
+  Serial.print(angle);
+  Serial.print(" degrees | ");
+
+  // Determine the direction and output it
+  if (xPosition > 700) {
+    Serial.print("Right");
+  } else if (xPosition < 300) {
+    Serial.print("Left");
+  } else if (yPosition > 700) {
+    Serial.print("Up");
+  } else if (yPosition < 300) {
+    Serial.print("Down");
+  } else {
+    Serial.print("Center");
+  }
+
+  Serial.println(); // End the line
+  delay(100); // Short delay to avoid spamming the Serial Monitor
+}

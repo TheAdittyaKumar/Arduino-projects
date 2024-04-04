@@ -1,0 +1,8 @@
+In Arduino IDE:
+
+Step 1: Go to sketch
+Step 2: Go to Include Library
+Step 3: Add .ZIP Library
+Open the Zip that I have included in the folder named "Install this Library in Arduino IDE"
+
+Done!

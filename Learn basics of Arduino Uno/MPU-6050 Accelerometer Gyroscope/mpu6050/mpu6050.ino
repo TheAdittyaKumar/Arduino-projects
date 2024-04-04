@@ -1,45 +1,40 @@
-#include <Wire.h>
-#include <MPU6050.h>
-#include <Mouse.h>
+#include "Wire.h"       
+#include "I2Cdev.h"     
+#include "MPU6050.h"    
 
 MPU6050 mpu;
-int16_t ax, ay, az, gx, gy, gz;
-int vx, vy;
+int16_t ax, ay, az;
+int16_t gx, gy, gz;
 
-const int buttonPin = 2; // Button connected to digital pin 2
+struct MyData {
+  byte X;
+  byte Y;
+  byte Z;
+};
 
-void setup() {
-    Serial.begin(9600);
-    pinMode(buttonPin, INPUT_PULLUP); // Initialize the button pin as an input with an internal pull-up resistor
-    Wire.begin();
-    Serial.println("I2C begin");
-    mpu.initialize();
-    Serial.println("MPU Sensor Initializing...");
-    if (!mpu.testConnection()) {
-        while (1); // Wait here infinitely till sensor initializes.
-    }
-    Serial.println("Sensor initialized");
+MyData data;
+
+void setup()
+{
+  Serial.begin(9600);
+  Wire.begin();
+  mpu.initialize();
+  //pinMode(LED_BUILTIN, OUTPUT);
 }
 
-void loop() {
-    mpu.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
-    vx = -(gx+250)/150; // change 300 from 0 to 355
-    vy = (gy+250)/150; // same here about -100 from -355 to 0
-
-    // Read the state of the button
-    int buttonState = digitalRead(buttonPin);
-
-    // Check if button is pressed (button state will be LOW if pressed due to pull-up)
-    if (buttonState == LOW) {
-        // Simulate a mouse click
-        Mouse.press(MOUSE_LEFT);
-        delay(100); // This delay represents the duration of the click
-        Mouse.release(MOUSE_LEFT);
-        delay(200); // This delay is to debounce and to prevent a rapid-fire click
-    }
-
-    // Uncomment the line below to enable mouse movement
-     Mouse.move(vx, vy);
-
-    delay(200); // Delay at the end of the loop
+void loop()
+{
+  mpu.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
+  data.X = map(ax, -17000, 17000, 0, 255 ); // X axis data
+  data.Y = map(ay, -17000, 17000, 0, 255); 
+  data.Z = map(az, -17000, 17000, 0, 255);  // Y axis data
+  delay(500);
+  Serial.print("Axis X = ");
+  Serial.print(data.X);
+  Serial.print("  ");
+  Serial.print("Axis Y = ");
+  Serial.print(data.Y);
+  Serial.print("  ");
+  Serial.print("Axis Z  = ");
+  Serial.println(data.Z);
 }

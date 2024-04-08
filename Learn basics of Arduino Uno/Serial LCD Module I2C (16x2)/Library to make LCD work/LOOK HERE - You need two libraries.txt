@@ -1,0 +1,6 @@
+Two libraries you need:
+1) LiquidCrystal_12C-1.1.2 (I have provided)
+2) NewPing 
+
+To install NewPing:
+Sketch > Include Library > Manage Libraries > search and install "NewPing"

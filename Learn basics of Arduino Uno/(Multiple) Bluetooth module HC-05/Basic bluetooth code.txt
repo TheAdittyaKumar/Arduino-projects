@@ -1,0 +1,19 @@
+void setup() {
+  // Start serial communication with the baud rate matching HC-05 settings (default is 9600)
+  Serial.begin(9600);
+}
+
+void loop() {
+  // Check if data is available to read from the HC-05 module
+  if (Serial.available() > 0) {
+    // Read the incoming byte
+    char receivedChar = Serial.read();
+    
+    // Echo the received character back to the Bluetooth terminal
+    Serial.print("Received: ");
+    Serial.println(receivedChar);
+  }
+
+  // Add a small delay to prevent overwhelming the serial buffer
+  delay(10);
+}

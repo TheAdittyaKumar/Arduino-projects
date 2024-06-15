@@ -1,11 +1,10 @@
-Arduino Projects - Learn Basics of Arduino Uno
-
-Hey there! I'm Adittya Kumar Chowdhury, and welcome to my Arduino Uno project repository! 
+# Hey there! I'm Adittya Kumar Chowdhury, and welcome to my Arduino Uno project repository! 
 
 If you're just starting with Arduino or looking to brush up on the basics, you're in the right place. This repo is packed with tutorials, code, circuit diagrams, and helpful YouTube videos to get you up and running with Arduino Uno.
 
-What's Inside?
-1. Learn Basics of Arduino Uno:
+# What's Inside?
+
+## 1. Learn Basics of Arduino Uno:
 
 This folder is your go-to resource for basic Arduino tutorials. Each subfolder includes:
 
@@ -37,7 +36,7 @@ Other cool tutorials:
 - Sound Sensor Module
 - Ultrasonic Sensor
 
-2. Toothless Project:
+## 2. Toothless Project (Scout Robot):
 
 Check out my Toothless project! This folder has everything:
 
@@ -47,7 +46,7 @@ Check out my Toothless project! This folder has everything:
 - 3D Design
 - Sensors and Images used
 
-3. Inbuilt LED Matrix R4 Clock:
+## 3. Inbuilt LED Matrix R4 Clock:
 
 Want to build a clock with an LED Matrix? This folder includes:
 
@@ -55,7 +54,7 @@ Want to build a clock with an LED Matrix? This folder includes:
 - Sketch file
 - YouTube Short link for a quick tutorial
 
-4. MPU6050 (Arduino) to Unity:
+## 4. MPU6050 (Arduino) to Unity:
 
 This project is still a work in progress. Stay tuned for updates!
 
